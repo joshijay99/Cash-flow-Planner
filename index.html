@@ -11,6 +11,52 @@
 
 <h1>💰 Jay's Cash Flow Planner</h1>
 
+<div id="dashboard">
+
+  <h3>Current Chequing Balance</h3>
+
+  <input
+    type="number"
+    id="currentBalance"
+    value="1700"
+  >
+
+  <button id="updateBalance">
+    Update Balance
+  </button>
+
+  
+  <h3>Current Balance Summary</h3>
+
+<p>
+  Income Next 7 Days:
+  <span id="income7Days">$0</span>
+</p>
+
+<p>
+  Expenses Next 7 Days:
+  <span id="expenses7Days">$0</span>
+</p>
+
+<p>
+  Projected Balance:
+  <span id="projectedBalance">$0</span>
+</p>
+
+  <h3>Upcoming Payments (Next 7 Days)</h3>
+
+  <div id="upcomingPayments">
+    No upcoming payments
+  </div>
+
+  <h3>Warnings</h3>
+
+  <div id="warnings">
+    ✓ Sufficient Funds
+  </div>
+
+</div>
+
 <div class="nav">
 <button id="prevMonth">◀ Previous Month</button>
 <h2 id="monthYear"></h2>
