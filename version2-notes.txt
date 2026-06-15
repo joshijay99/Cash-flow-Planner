@@ -1,0 +1,10 @@
+Version 2 Features
+
+- Save current balance to Local Storage
+- Auto-load current balance
+- Projected End-of-Month Balance
+- Lowest Balance This Month
+- Warning threshold: $500
+- Include recurring income
+- Include recurring expenses
+- Include manual transactions in forecast

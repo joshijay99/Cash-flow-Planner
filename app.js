@@ -2,10 +2,25 @@ const monthYear = document.getElementById("monthYear");
 const calendar = document.getElementById("calendar");
 
 let currentDate = new Date();
+
 let transactions =
 JSON.parse(
 localStorage.getItem("transactions")
 ) || {};
+
+// =====================
+// BALANCE STORAGE
+// =====================
+
+let currentBalance =
+Number(
+localStorage.getItem("currentBalance")
+) || 1700;
+
+document.getElementById(
+"currentBalance"
+).value = currentBalance;
+
 // =====================
 // RECURRING INCOME
 // =====================
@@ -25,24 +40,16 @@ day: 1
 const recurringExpenses = [
 { name: "Restaurant Rent", amount: 1280, day: 1 },
 { name: "TD Payment + Ins.", amount: 127.92, day: 1 },
-
 { name: "RBC LOC", amount: 40, day: 5 },
-
 { name: "TD Payment + Ins.", amount: 185.67, day: 8 },
-
 { name: "SGI Home Insurance", amount: 184.10, day: 10 },
-
 { name: "SGI Auto Insurance", amount: 239.73, day: 11 },
 { name: "Apple Subscription", amount: 2.61, day: 11 },
 { name: "Apple Subscription", amount: 4.19, day: 11 },
-
 { name: "Netflix", amount: 8.39, day: 16 },
-
 { name: "Affirm", amount: 141.27, day: 17 },
 { name: "Amazon Prime", amount: 10.49, day: 17 },
-
 { name: "Home Depot Loan", amount: 99.86, day: 19 },
-
 { name: "TD Life Insurance", amount: 21.87, day: 23 }
 ];
 
@@ -50,38 +57,53 @@ const recurringExpenses = [
 // HELPERS
 // =====================
 
-function addEntryToDay(dayBoxes, day, text, amount, color) {
+function saveTransactions() {
+
+localStorage.setItem(
+"transactions",
+JSON.stringify(transactions)
+);
+
+}
+
+function addEntryToDay(
+dayBoxes,
+day,
+text,
+amount,
+color
+) {
 
 dayBoxes.forEach(box => {
 
-
 const dayNumber =
-  box.querySelector("strong");
+box.querySelector("strong");
 
 if (
-  dayNumber &&
-  Number(dayNumber.textContent) === day
+dayNumber &&
+Number(dayNumber.textContent) === day
 ) {
 
-  const entry =
-    document.createElement("div");
+const entry =
+document.createElement("div");
 
-  entry.style.marginTop = "5px";
-  entry.style.fontSize = "11px";
-  entry.style.color = color;
+entry.style.marginTop = "5px";
+entry.style.fontSize = "11px";
+entry.style.color = color;
 
-  entry.innerHTML =
-    `${text}<br>${amount}`;
+entry.innerHTML =
+`${text}<br>${amount}`;
 
-  box.appendChild(entry);
+box.appendChild(entry);
+
 }
 
-
 });
+
 }
 
 // =====================
-// LOAD RECURRING ITEMS
+// RECURRING ITEMS
 // =====================
 
 function loadRecurringItems() {
@@ -97,29 +119,25 @@ document.querySelectorAll(".day");
 
 recurringIncome.forEach(item => {
 
-
 addEntryToDay(
-  dayBoxes,
-  item.day,
-  item.name,
-  `+$${item.amount}`,
-  "green"
+dayBoxes,
+item.day,
+item.name,
+`+$${item.amount}`,
+"green"
 );
-
 
 });
 
 recurringExpenses.forEach(item => {
 
-
 addEntryToDay(
-  dayBoxes,
-  item.day,
-  item.name,
-  `-$${item.amount}`,
-  "red"
+dayBoxes,
+item.day,
+item.name,
+`-$${item.amount}`,
+"red"
 );
-
 
 });
 
@@ -131,41 +149,40 @@ dimplesDate.getFullYear()
 <= year + 1
 ) {
 
-
 if (
-  dimplesDate.getFullYear() === year &&
-  dimplesDate.getMonth() === month
+dimplesDate.getFullYear() === year &&
+dimplesDate.getMonth() === month
 ) {
 
-  addEntryToDay(
-    dayBoxes,
-    dimplesDate.getDate(),
-    "Dimples Paycheque",
-    "+$2020",
-    "green"
-  );
+addEntryToDay(
+dayBoxes,
+dimplesDate.getDate(),
+"Dimples Paycheque",
+"+$2020",
+"green"
+);
 
-  addEntryToDay(
-    dayBoxes,
-    dimplesDate.getDate(),
-    "Mortgage",
-    "-$1261.92",
-    "red"
-  );
+addEntryToDay(
+dayBoxes,
+dimplesDate.getDate(),
+"Mortgage",
+"-$1261.92",
+"red"
+);
 
-  addEntryToDay(
-    dayBoxes,
-    dimplesDate.getDate(),
-    "Car Loan",
-    "-$318.22",
-    "red"
-  );
+addEntryToDay(
+dayBoxes,
+dimplesDate.getDate(),
+"Car Loan",
+"-$318.22",
+"red"
+);
+
 }
 
 dimplesDate.setDate(
-  dimplesDate.getDate() + 14
+dimplesDate.getDate() + 14
 );
-
 
 }
 
@@ -177,25 +194,24 @@ jayDate.getFullYear()
 <= year + 1
 ) {
 
-
 if (
-  jayDate.getFullYear() === year &&
-  jayDate.getMonth() === month
+jayDate.getFullYear() === year &&
+jayDate.getMonth() === month
 ) {
 
-  addEntryToDay(
-    dayBoxes,
-    jayDate.getDate(),
-    "Jay Paycheque",
-    "+$1200",
-    "green"
-  );
+addEntryToDay(
+dayBoxes,
+jayDate.getDate(),
+"Jay Paycheque",
+"+$1200",
+"green"
+);
+
 }
 
 jayDate.setDate(
-  jayDate.getDate() + 14
+jayDate.getDate() + 14
 );
-
 
 }
 
@@ -237,6 +253,7 @@ lastDay,
 "-$17.95",
 "red"
 );
+
 }
 
 // =====================
@@ -263,18 +280,10 @@ year: "numeric"
 );
 
 const firstDay =
-new Date(
-year,
-month,
-1
-).getDay();
+new Date(year, month, 1).getDay();
 
 const daysInMonth =
-new Date(
-year,
-month + 1,
-0
-).getDate();
+new Date(year, month + 1, 0).getDate();
 
 for (
 let i = 0;
@@ -282,14 +291,9 @@ i < firstDay;
 i++
 ) {
 
-
-const emptyCell =
-  document.createElement("div");
-
 calendar.appendChild(
-  emptyCell
+document.createElement("div")
 );
-
 
 }
 
@@ -299,77 +303,58 @@ day <= daysInMonth;
 day++
 ) {
 
-
 const cell =
-  document.createElement("div");
+document.createElement("div");
 
 cell.className = "day";
 
 const dayTitle =
-  document.createElement("strong");
+document.createElement("strong");
 
 dayTitle.textContent = day;
 
 const button =
-  document.createElement("button");
+document.createElement("button");
 
 button.textContent = "Add";
 
 button.addEventListener(
-  "click",
-  () => {
+"click",
+() => {
 
-    const description =
-      prompt(
-        "Enter Description"
-      );
+const description =
+prompt("Enter Description");
 
-    if (!description) return;
+if (!description) return;
 
-    const amount =
-      prompt(
-        "Enter Amount"
-      );
+const amount =
+prompt("Enter Amount");
 
-    if (!amount) return;
+if (!amount) return;
 
-   const dateKey =
+const dateKey =
 `${year}-${month}-${day}`;
 
 if (!transactions[dateKey]) {
-  transactions[dateKey] = [];
+
+transactions[dateKey] = [];
+
 }
 
 transactions[dateKey].push({
-  description,
-  amount
+description,
+amount
 });
 
-localStorage.setItem(
-  "transactions",
-  JSON.stringify(transactions)
-);
+saveTransactions();
 
-const entry =
-  document.createElement("div");
+renderCalendar();
 
-entry.style.marginTop =
-  "5px";
-
-entry.style.color =
-  "green";
-
-entry.innerHTML =
-  `${description}<br>$${amount}`;
-
-cell.appendChild(entry);
-  }
+}
 );
 
 cell.appendChild(dayTitle);
-cell.appendChild(
-  document.createElement("br")
-);
+cell.appendChild(document.createElement("br"));
 cell.appendChild(button);
 
 const dateKey =
@@ -377,27 +362,23 @@ const dateKey =
 
 if (transactions[dateKey]) {
 
-  transactions[dateKey].forEach(
-    transaction => {
+transactions[dateKey].forEach(
+transaction => {
 
-      const savedEntry =
-        document.createElement("div");
+const savedEntry =
+document.createElement("div");
 
-      savedEntry.style.marginTop =
-        "5px";
-
-   savedEntry.style.color =
-  "blue";
-
-savedEntry.style.fontWeight =
-  "bold";
+savedEntry.style.marginTop = "5px";
+savedEntry.style.color = "blue";
+savedEntry.style.fontWeight = "bold";
 
 savedEntry.innerHTML =
-  `⭐ SAVED: ${transaction.description}<br>$${transaction.amount}`; 
- cell.appendChild(savedEntry); 
+`⭐ ${transaction.description}<br>$${transaction.amount}`;
 
-    }
-  );
+cell.appendChild(savedEntry);
+
+}
+);
 
 }
 
@@ -406,6 +387,7 @@ calendar.appendChild(cell);
 }
 
 loadRecurringItems();
+
 }
 
 // =====================
@@ -414,29 +396,40 @@ loadRecurringItems();
 
 function updateDashboard() {
 
-const currentBalance =
+currentBalance =
 Number(
 document.getElementById(
 "currentBalance"
 ).value
 ) || 0;
 
+localStorage.setItem(
+"currentBalance",
+currentBalance
+);
+
 const income =
-2020 + 1200;
+3220;
 
 const expenses =
-1261.92 +
-318.22 +
-1495 +
-21.87 +
-22.78 +
-5 +
-17.95;
+3142.74;
 
 const projectedBalance =
 currentBalance +
 income -
 expenses;
+
+const projectedEndMonth =
+projectedBalance +
+1200 -
+1495;
+
+const lowestBalance =
+Math.min(
+currentBalance,
+projectedBalance,
+projectedEndMonth
+);
 
 document.getElementById(
 "income7Days"
@@ -455,40 +448,47 @@ document.getElementById(
 projectedBalance.toFixed(2);
 
 document.getElementById(
-"upcomingPayments"
-).innerHTML =
-`     TD Life Insurance - $21.87<br><br>
-    Dimples Paycheque + $2020<br>
-    Mortgage - $1261.92<br>
-    Car Loan - $318.22
-    `;
+"projectedEndMonth"
+).textContent =
+"$" +
+projectedEndMonth.toFixed(2);
+
+document.getElementById(
+"lowestBalance"
+).textContent =
+"$" +
+lowestBalance.toFixed(2);
 
 if (
-projectedBalance < 500
+lowestBalance < 0
 ) {
 
-
 document.getElementById(
-  "warnings"
+"warnings"
 ).innerHTML =
-  "⚠ Low Balance Warning";
-
-
-} else {
-
-
-document.getElementById(
-  "warnings"
-).innerHTML =
-  "✓ Sufficient Funds";
-
+"🚨 Negative Balance Risk";
 
 }
+else if (
+lowestBalance < 500
+) {
+
+document.getElementById(
+"warnings"
+).innerHTML =
+"⚠ Low Balance Warning";
+
+}
+else {
+
+document.getElementById(
+"warnings"
+).innerHTML =
+"✓ Sufficient Funds";
+
 }
 
-// =====================
-// MONTH NAVIGATION
-// =====================
+}
 
 document
 .getElementById("prevMonth")
@@ -496,15 +496,13 @@ document
 "click",
 () => {
 
+currentDate.setMonth(
+currentDate.getMonth() - 1
+);
 
-  currentDate.setMonth(
-    currentDate.getMonth() - 1
-  );
+renderCalendar();
 
-  renderCalendar();
 }
-
-
 );
 
 document
@@ -513,15 +511,13 @@ document
 "click",
 () => {
 
+currentDate.setMonth(
+currentDate.getMonth() + 1
+);
 
-  currentDate.setMonth(
-    currentDate.getMonth() + 1
-  );
+renderCalendar();
 
-  renderCalendar();
 }
-
-
 );
 
 document
@@ -532,10 +528,6 @@ document
 "click",
 updateDashboard
 );
-
-// =====================
-// START
-// =====================
 
 renderCalendar();
 updateDashboard();
