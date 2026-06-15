@@ -2,7 +2,10 @@ const monthYear = document.getElementById("monthYear");
 const calendar = document.getElementById("calendar");
 
 let currentDate = new Date();
-
+let transactions =
+JSON.parse(
+localStorage.getItem("transactions")
+) || {};
 // =====================
 // RECURRING INCOME
 // =====================
@@ -330,19 +333,36 @@ button.addEventListener(
 
     if (!amount) return;
 
-    const entry =
-      document.createElement("div");
+   const dateKey =
+`${year}-${month}-${day}`;
 
-    entry.style.marginTop =
-      "5px";
+if (!transactions[dateKey]) {
+  transactions[dateKey] = [];
+}
 
-    entry.style.color =
-      "green";
+transactions[dateKey].push({
+  description,
+  amount
+});
 
-    entry.innerHTML =
-      `${description}<br>$${amount}`;
+localStorage.setItem(
+  "transactions",
+  JSON.stringify(transactions)
+);
 
-    cell.appendChild(entry);
+const entry =
+  document.createElement("div");
+
+entry.style.marginTop =
+  "5px";
+
+entry.style.color =
+  "green";
+
+entry.innerHTML =
+  `${description}<br>$${amount}`;
+
+cell.appendChild(entry);
   }
 );
 
@@ -352,8 +372,36 @@ cell.appendChild(
 );
 cell.appendChild(button);
 
-calendar.appendChild(cell);
+const dateKey =
+`${year}-${month}-${day}`;
 
+if (transactions[dateKey]) {
+
+  transactions[dateKey].forEach(
+    transaction => {
+
+      const savedEntry =
+        document.createElement("div");
+
+      savedEntry.style.marginTop =
+        "5px";
+
+   savedEntry.style.color =
+  "blue";
+
+savedEntry.style.fontWeight =
+  "bold";
+
+savedEntry.innerHTML =
+  `⭐ SAVED: ${transaction.description}<br>$${transaction.amount}`; 
+ cell.appendChild(savedEntry); 
+
+    }
+  );
+
+}
+
+calendar.appendChild(cell);
 
 }
 
